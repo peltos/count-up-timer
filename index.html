@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Flip Clock Timer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lato:wght@100;300;400;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body, html {
+        font-family: 'Lato', sans-serif;
+        padding: 0;
+        margin: 0;
+        width: 100%;
+        height: 100%;
+        color: #333;
+        background: #eee;
+      }
+
+      *, *::before, *::after {
+        box-sizing: border-box;
+      }
+      .wrapper {
+        padding: 16px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+      }
+
+      h1 {
+        text-align: center;
+        margin: 0;
+      }
+      label {
+        margin-top: 16px;
+        display: block;
+        font-weight: 900;
+      }
+      #timer {
+        text-align: center;
+      }
+
+      .flip-clock {
+        display: inline-block;
+        margin: 0 10px;
+        perspective: 800px;
+      }
+
+      .flip-clock .flip-clock__wrap {
+        transform-style: preserve-3d;
+        /* animation: flip 1s infinite; */
+      }
+
+      .flip-clock .flip-clock__inner {
+        position: relative;
+        width: 100%;
+        height: 140px;
+        width: 100px;
+        font-size: 48px;
+      }
+
+      .flip-clock .flip-clock__upper,
+      .flip-clock .flip-clock__lower {
+        position: absolute;
+        width: 100%;
+        height: 50%;
+        backface-visibility: hidden;
+        overflow: hidden;
+        border-radius: 4px;
+      }
+
+      .flip-clock .flip-clock__upper:before,
+      .flip-clock .flip-clock__upper:after,
+      .flip-clock .flip-clock__lower:before,
+      .flip-clock .flip-clock__lower:after {
+        content: '';
+        width: 4px;
+        height: 10px;
+        background-color: #eee;
+        position: absolute;
+        z-index: 10;
+        border-radius: 0 0 4px 4px;
+      }
+
+      .flip-clock .flip-clock__upper:before,
+      .flip-clock .flip-clock__lower:before {
+        left: 20%;
+        top: 0;
+      }
+
+      .flip-clock .flip-clock__upper:after,
+      .flip-clock .flip-clock__lower:after {
+        right: 20%;
+        top: 0;
+      }
+
+      .flip-clock .flip-clock__upper {
+        z-index: 3;
+        bottom: 0;
+      }
+
+      .flip-clock.active .flip-clock__upper {
+        transform-origin: bottom center;
+        transform-style: preserve-3d;
+        animation: 1s flip-inner -2ms infinite;
+      }
+
+      .flip-clock .flip-clock__lower {
+        z-index: 4;
+        bottom: 0;
+      }
+
+      .flip-clock .flip-clock__card {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        line-height: 60px;
+        color: #eee;
+        background-color: #333;
+        text-align: center;
+        transform-origin: bottom center;
+        transform-style: preserve-3d;
+        display: flex; /* Added display: flex */
+        align-items: center; /* Added align-items: center */
+        justify-content: center; /* Added justify-content: center */
+      }
+
+      @keyframes flip {
+        0% {
+          transform: rotateX(0);
+        }
+        100% {
+          transform: rotateX(-360deg);
+        }
+      }
+
+      @keyframes flip-inner {
+        0% {
+          transform: scaleY(1);
+          z-index: 5;
+        }
+        1% {
+          transform: scaleY(1);
+          z-index: 3;
+        }
+        50% {
+          transform: scaleY(-1);
+          margin-bottom: 139%;
+          z-index: 5;
+        }
+        100% {
+          transform: scaleY(1);
+          z-index: 5;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrapper">
+      <h1>Days past since <pre> loading... </pre></h1>
+      <div id="timer">
+        <div class="flip-clock">
+          <div class="flip-clock__wrap">
+            <div class="flip-clock__inner">
+              <div class="flip-clock__upper">
+                <div class="flip-clock__card" id="days-card-before">--</div>
+              </div>
+              <div class="flip-clock__lower">
+                <div class="flip-clock__card" id="days-card">--</div>
+              </div>
+            </div>
+            <label> Days </label>
+          </div>
+        </div>
+        <div class="flip-clock">
+          <div class="flip-clock__wrap">
+            <div class="flip-clock__inner">
+              <div class="flip-clock__upper">
+                <div class="flip-clock__card" id="hours-card-before">--</div>
+              </div>
+              <div class="flip-clock__lower">
+                <div class="flip-clock__card" id="hours-card">--</div>
+              </div>
+            </div>
+            <label> Hours </label>
+          </div>
+        </div>
+        <div class="flip-clock">
+          <div class="flip-clock__wrap">
+            <div class="flip-clock__inner">
+              <div class="flip-clock__upper">
+                <div class="flip-clock__card" id="minutes-card-before">--</div>
+              </div>
+              <div class="flip-clock__lower">
+                <div class="flip-clock__card" id="minutes-card">--</div>
+              </div>
+            </div>
+            <label> Minutes </label>
+          </div>
+        </div>
+        <div class="flip-clock active">
+          <div class="flip-clock__wrap">
+            <div class="flip-clock__inner">
+              <div class="flip-clock__upper">
+                <div class="flip-clock__card" id="seconds-card-before">--</div>
+              </div>
+              <div class="flip-clock__lower">
+                <div class="flip-clock__card" id="seconds-card">--</div>
+              </div>
+            </div>
+            <label> Seconds </label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Set the target date
+      const dateSince = '07/05/2023 19:30:00'
+      const targetDate = new Date(dateSince).getTime();
+
+      // Update the timer every second
+      setInterval(updateTimer, 1000);
+      
+      document.querySelector('pre').innerHTML = new Date(dateSince).toLocaleString('nl');
+
+      function updateTimer() {
+        // Get the current date and time
+        const currentDate = new Date().getTime();
+
+        // Calculate the time difference
+        const timeDifference = currentDate - targetDate;
+
+        // Calculate the days, hours, minutes, and seconds
+        const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+        const hours = Math.floor(
+          (timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+        );
+        const minutes = Math.floor(
+          (timeDifference % (1000 * 60 * 60)) / (1000 * 60)
+        );
+        const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
+
+        // Display the time on the page
+        document.getElementById('days-card').innerText = days
+          .toString()
+          .padStart(2, '0');
+        document.getElementById('hours-card').innerText = hours
+          .toString()
+          .padStart(2, '0');
+        document.getElementById('minutes-card').innerText = minutes
+          .toString()
+          .padStart(2, '0');
+        document.getElementById('seconds-card').innerText = seconds
+          .toString()
+          .padStart(2, '0');
+
+        const hoursBefore = hours + 1 >= 24 ? 0 : hours + 1;
+        const minutesBefore = minutes + 1 >= 60 ? 0 : minutes + 1;
+        const secondsBefore = seconds + 1 >= 60 ? 0 : seconds + 1;
+
+        if (hoursBefore === 0) {
+          const flipClockDays = document.querySelectorAll('.flip-clock')[0];
+          flipClockDays.classList.toggle('active');
+          setTimeout(() => flipClockDays.classList.toggle('active'), 1000);
+        }
+
+        if (minutesBefore === 0) {
+          const flipClockHours = document.querySelectorAll('.flip-clock')[1];
+          flipClockHours.classList.toggle('active');
+          setTimeout(() => flipClockHours.classList.toggle('active'), 1000);
+        }
+
+        if (secondsBefore === 0) {
+          const flipClockMinutes = document.querySelectorAll('.flip-clock')[2];
+          flipClockMinutes.classList.toggle('active');
+          setTimeout(() => flipClockMinutes.classList.toggle('active'), 1000);
+        }
+
+        document.getElementById('days-card-before').innerText = (days - 1)
+          .toString()
+          .padStart(2, '0');
+        document.getElementById('hours-card-before').innerText = hoursBefore
+          .toString()
+          .padStart(2, '0');
+        document.getElementById('minutes-card-before').innerText = minutesBefore
+          .toString()
+          .padStart(2, '0');
+        document.getElementById('seconds-card-before').innerText = secondsBefore
+          .toString()
+          .padStart(2, '0');
+      }
+    </script>
+  </body>
+</html>
